@@ -140,12 +140,19 @@
 
 (defn- parse-line
   "Given a line and Parser object, return a list of Parses."
-  [line parser]
+  ([line parser]
   (let [line (strip-parens line)
         results (StringBuffer.)
         parse-num 1]
     (.show ^Parse (first (ParserTool/parseLine line parser parse-num)) results)
     (str results)))
+    ([line parser num_results]
+    (let [line (strip-parens line)
+          results (StringBuffer.)
+          parse-num num_results]
+      (.show ^Parse (first (ParserTool/parseLine line parser parse-num)) results)
+      (str results)))
+    )
 
 
 (defmulti make-treebank-parser
@@ -178,7 +185,7 @@
   [ptree & [tag-fn]]
   (let [t (or tag-fn symbol)]
     (if (= :E (first ptree))
-      {:tag 
+      {:tag
       (t (second (second ptree))) :chunk (map #(tr % tag-fn) (drop 2 ptree))}
       (second ptree))))
 
