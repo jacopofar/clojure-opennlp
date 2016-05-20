@@ -46,6 +46,19 @@
       (println "Unable to execute treebank-parser tests."
                "Download the model files to $PROJECT_ROOT/parser-models."))))
 
+(deftest parser-test-multiple
+ (try
+   (let [parser (make-treebank-parser "parser-model/en-parser-chunking.bin")]
+     (is (= (parser ["If you don't see it check other places it might be"] 5)
+            [(str "a")]))
+    ;  (is (= (make-tree (first (parser ["If you don't see it check other places it might be" 5])))
+    ;         '{:tag TOP
+    ;           }))
+              )
+   (catch FileNotFoundException e
+     (println "Unable to execute treebank-parser tests."
+              "Download the model files to $PROJECT_ROOT/parser-models."))))
+
 (deftest parser-test-with-bad-chars
   (try
     (let [parser (make-treebank-parser "parser-model/en-parser-chunking.bin")]
@@ -72,4 +85,3 @@
       (catch FileNotFoundException e
         (println "Unable to execute treebank-parser tests."
                  "Download the model files to $PROJECT_ROOT/parser-models."))))
-
